@@ -9,12 +9,12 @@ export default function token(req, res, next) {
   try {
     const token = authorization?.replace("Bearer", "").trim()
     if (!token) {
-      return res.status(404).send("Token not found")
+      return res.status(401).send("Token not found")
     }
 
     const user = jwt.verify(token, process.env.JWT_KEY)
 
-    res.locals.user = user
+    res.locals.userId = user.userId
     next()
   } catch (e) {
     res.status(401).send("Token has expired")
